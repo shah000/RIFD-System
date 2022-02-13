@@ -29,7 +29,7 @@ class AuthController extends GetxController {
       Get.offAll(() => LoginScreen());
     } else {
       // if the user exists and logged in the the user is navigated to the Home Screen
-      Get.offAll(() => IntroScreen());
+      Get.offAll(() => const IntroScreen());
     }
   }
 
@@ -41,10 +41,10 @@ class AuthController extends GetxController {
       errormessage = e.message!;
       Get.snackbar('Error', errormessage,
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 4),
-          animationDuration: Duration(microseconds: 1),
+          duration: const Duration(seconds: 4),
+          animationDuration: const Duration(microseconds: 1),
           colorText: Colors.white,
-          icon: Icon(Icons.error),
+          icon: const Icon(Icons.error),
           backgroundColor: Colors.redAccent);
     }
   }

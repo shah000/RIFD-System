@@ -10,7 +10,7 @@ void main() async {
     Get.put(AuthController());
   });
   runApp(GetMaterialApp(
-    debugShowCheckedModeBanner:  false,
+    debugShowCheckedModeBanner: false,
     home: LoginScreen(),
   ));
 }

@@ -8,6 +8,7 @@ import 'package:fyp/Screens/challen_screen.dart';
 import 'package:fyp/Screens/change_password.dart';
 import 'package:fyp/Screens/vechile_details.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -15,6 +16,8 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
+void sendEmail(String email) => launch("mailto:$email");
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -37,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       "Admin",
-                      style: TextStyle(color: Colors.white, fontSize: 1),
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     SizedBox(
                       height: 8,
@@ -247,7 +250,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     primary: Colors.lightBlueAccent, // background
                     onPrimary: Colors.white, // foreground
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    sendEmail('pfroject87@gmail.com');
+                  },
                   child: Text(
                     "Send email",
                     style: TextStyle(

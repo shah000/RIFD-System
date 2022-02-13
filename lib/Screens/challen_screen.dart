@@ -4,9 +4,10 @@ import 'package:expansion_widget/expansion_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/Screens/email_screen.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChallenScreen extends StatefulWidget {
-  ChallenScreen({Key? key}) : super(key: key);
+  const ChallenScreen({Key? key}) : super(key: key);
 
   @override
   _ChallenScreenState createState() => _ChallenScreenState();
