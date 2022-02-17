@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/Constants/constants.dart';
-import 'package:fyp/Screens/home_screen.dart';
+
 import 'package:fyp/Screens/login_screen.dart';
 import 'package:fyp/Screens/welcom_screen.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,6 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<User?> firebaseUser;
   RxBool isload = false.obs;
-  RxString? _error;
 
   @override
   void onReady() {
@@ -29,7 +27,7 @@ class AuthController extends GetxController {
       Get.offAll(() => LoginScreen());
     } else {
       // if the user exists and logged in the the user is navigated to the Home Screen
-      Get.offAll(() => IntroScreen());
+      Get.offAll(() => const IntroScreen());
     }
   }
 
@@ -41,10 +39,10 @@ class AuthController extends GetxController {
       errormessage = e.message!;
       Get.snackbar('Error', errormessage,
           snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 4),
-          animationDuration: Duration(microseconds: 1),
+          duration: const Duration(seconds: 4),
+          animationDuration: const Duration(microseconds: 1),
           colorText: Colors.white,
-          icon: Icon(Icons.error),
+          icon: const Icon(Icons.error),
           backgroundColor: Colors.redAccent);
     }
   }

@@ -8,6 +8,8 @@ import 'package:fyp/Screens/login_screen.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 class IntroScreen extends StatefulWidget {
+  const IntroScreen({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _IntroScreen();
