@@ -4,8 +4,10 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/Constants/constants.dart';
+import 'package:fyp/Screens/add_vechile.dart';
 import 'package:fyp/Screens/challen_screen.dart';
 import 'package:fyp/Screens/change_password.dart';
+import 'package:fyp/Screens/search_screen.dart';
 import 'package:fyp/Screens/vechile_details.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,8 +18,6 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
-void sendEmail(String email) => launch("mailto:$email");
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderType: BorderType.Circle,
               radius: Radius.circular(60),
               color: Colors.blueAccent,
-              dashPattern: [1, 2, 3, 6, 8],
+              dashPattern: const [1, 2, 3, 6, 8],
               strokeWidth: 10,
               strokeCap: StrokeCap.butt,
               padding: EdgeInsets.all(1),
@@ -251,14 +251,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () async {
-                    sendEmail('pfroject87@gmail.com');
+                    Get.to(AddVech());
                   },
                   child: Text(
-                    "Send email",
+                    "Add Vechile",
                     style: TextStyle(
                         color: Colors.yellow, fontWeight: FontWeight.bold),
                   )),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: InkWell(
+            //       onTap: () {
+            //         Get.to(SerachScreen());
+            //       },
+            //       child: Text("svvv")),
+            // ),
           ],
         ),
       ),

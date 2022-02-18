@@ -1,8 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_local_variable
 
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/model/user.dart';
 import 'package:outline_search_bar/outline_search_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -15,20 +17,29 @@ class VechileDetails extends StatefulWidget {
 
 class _VechileDetailsState extends State<VechileDetails> {
   bool selected = false;
-  final databaseReference = FirebaseDatabase.instance.ref('Users');
-  var rname = '';
+  List<UserModel> dataList = [];
+  DatabaseReference databaseReference =
+      FirebaseDatabase.instance.ref().child('Users');
 
-  readData() async {
+  void readData() {
     print('read');
-    DatabaseEvent event = await databaseReference.once();
-    print(event.snapshot.value);
+    var readData = databaseReference.once().then((snap) {
+      //TO retrieve all the documents from collection
+
+      var data = snap.snapshot.value;
+
+      setState(() {
+        print('Length : ${dataList.length}');
+      });
+    });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     readData();
-    print("object");
+    if (kDebugMode) {
+      print("object");
+    }
     super.initState();
   }
 
@@ -46,6 +57,10 @@ class _VechileDetailsState extends State<VechileDetails> {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: OutlineSearchBar(
+                onKeywordChanged: (text) {
+                  serachMethod(text);
+                },
+                onTap: () {},
                 borderWidth: 1,
                 borderRadius: BorderRadius.circular(15),
                 hideSearchButton: true,
@@ -61,7 +76,7 @@ class _VechileDetailsState extends State<VechileDetails> {
               height: 25,
             ),
             Card(
-              child: Container(
+              child: SizedBox(
                 width: 340,
                 height: 400,
                 child: ContainedTabBarView(
@@ -85,41 +100,30 @@ class _VechileDetailsState extends State<VechileDetails> {
                     unselectedLabelColor: Colors.black,
                   ),
                   views: [
-                    Container(
+                    SizedBox(
                       width: 330,
                       height: 400,
                       child: Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FirebaseAnimatedList(
-                                query: databaseReference,
-                                itemBuilder:
-                                    (context, snapshot, animation, index) {
-                                  // var x = snapshot.value!['name'];
-
-                                  return ListTile(
-                                    title: Text('hjhjk'),
+                            padding: const EdgeInsets.all(8.0),
+                            child: FirebaseAnimatedList(
+                              defaultChild:
+                                  Center(child: CircularProgressIndicator()),
+                              query: databaseReference,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder:
+                                  (context, snapshot, animation, index) {
+                                Map? user = snapshot.value as Map?;
+                                if (user!.isEmpty) {
+                                  return Center(
+                                    child: Text("Not Data"),
                                   );
-                                },
-                              )
-                              // Text("Name"),
-                              // Text("Rehan Ali"),
-                              // SizedBox(
-                              //   height: 40,
-                              // ),
-                              // Text("Email"),
-                              // Text("rehanAli@gmail.com"),
-                              // SizedBox(
-                              //   height: 40,
-                              // ),
-                              // Text("Address"),
-                              // Text("House32,st11,I-8/1\nIslamabad."),
-                            ],
-                          ),
-                        ),
+                                } else {
+                                  return _buildUserItem(user: user);
+                                }
+                              },
+                            )),
                       ),
                     ),
                     Container(
@@ -127,25 +131,19 @@ class _VechileDetailsState extends State<VechileDetails> {
                       height: 400,
                       child: Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Name"),
-                              Text("Rehan Ali"),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text("Email"),
-                              Text("rehanAli@gmail.com"),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text("Address"),
-                              Text("House32,st11,I-8/1\nIslamabad."),
-                            ],
-                          ),
-                        ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: FirebaseAnimatedList(
+                              defaultChild:
+                                  Center(child: CircularProgressIndicator()),
+                              query: databaseReference,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder:
+                                  (context, snapshot, animation, index) {
+                                Map? user = snapshot.value as Map?;
+                                return _buildVechileItem(user: user);
+                              },
+                            )),
                       ),
                     ),
                     Container(
@@ -183,5 +181,117 @@ class _VechileDetailsState extends State<VechileDetails> {
         ),
       ),
     );
+  }
+
+  Widget _buildUserItem({Map? user}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.all(10),
+      height: MediaQuery.of(context).size.height * 0.2,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Name',
+                  ),
+                  Text(
+                    user!['name'],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text("Email"),
+                  Text(
+                    user['email'],
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  Text("Address"),
+                  Text(
+                    user['address'],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVechileItem({Map? user}) {
+    assert(user != null);
+    // Color typeColor = getTypeColor(user['type']);
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.all(10),
+      height: MediaQuery.of(context).size.height * 0.2,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Model',
+                  ),
+                  Text(
+                    user!['Model'],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text("vehicle Number"),
+                  Text(
+                    user['vehNum'],
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  Text("Address"),
+                  Text(
+                    user['address'],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void serachMethod(String text) async {
+    DatabaseReference serachref =
+        FirebaseDatabase.instance.ref().child('Users');
+    databaseReference.once().then((value) {
+      dataList.clear();
+      final d = value.snapshot.value as Map;
+
+      dataList.forEach((element) {
+        UserModel userModel = UserModel(
+            model: element.model,
+            address: element.address,
+            email: element.email,
+            id: element.id,
+            name: element.name,
+            vehNum: element.vehNum);
+        if (userModel.name.contains(text) || userModel.name.contains(text)) {
+          dataList.add(userModel);
+        }
+      });
+    });
   }
 }
