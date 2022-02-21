@@ -239,34 +239,52 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.horizontal(left: Radius.zero)),
-              width: 140,
-              height: 90,
-              padding: const EdgeInsets.only(top: 30.0),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.lightBlueAccent, // background
-                    onPrimary: Colors.white, // foreground
-                  ),
-                  onPressed: () async {
-                    Get.to(AddVech());
-                  },
-                  child: Text(
-                    "Add Vechile",
-                    style: TextStyle(
-                        color: Colors.yellow, fontWeight: FontWeight.bold),
-                  )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.horizontal(left: Radius.zero)),
+                  width: 140,
+                  height: 90,
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.lightBlueAccent, // background
+                        onPrimary: Colors.white, // foreground
+                      ),
+                      onPressed: () async {
+                        Get.to(AddVech());
+                      },
+                      child: Text(
+                        "Add Vechile",
+                        style: TextStyle(
+                            color: Colors.yellow, fontWeight: FontWeight.bold),
+                      )),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  width: 140,
+                  height: 90,
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.lightBlueAccent, // background
+                        onPrimary: Colors.white, // foreground
+                      ),
+                      onPressed: () {
+                        Get.to((SerachScreen()));
+                      },
+                      child: Text(
+                        "Serach",
+                        style: TextStyle(
+                            color: Colors.yellow, fontWeight: FontWeight.bold),
+                      )),
+                ),
+              ],
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: InkWell(
-            //       onTap: () {
-            //         Get.to(SerachScreen());
-            //       },
-            //       child: Text("svvv")),
-            // ),
           ],
         ),
       ),

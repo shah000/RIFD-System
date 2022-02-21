@@ -22,18 +22,29 @@ class _AddVechState extends State<AddVech> {
   final addressController = TextEditingController();
   final emailController = TextEditingController();
   final vechNumController = TextEditingController();
-  DatabaseReference databaseReference = FirebaseDatabase.instance.ref('Users');
+  final tagNoController = TextEditingController();
+  DatabaseReference databaseReference =
+      FirebaseDatabase.instance.ref('Add vehicle');
 
-  void addData(
-      String name, String address, String model, String email, String vehNum) {
+  void addData(String name, String address, String model, String email,
+      String vehNum, String Tagno) {
     databaseReference.push().set({
       'name': name,
-      'status': '0',
+      'status': '1',
       'Model': model,
       'address': address,
       'email': email,
-      'vehNum': vehNum
+      'vehNum': vehNum,
+      'Tagno': Tagno
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("object");
+    oer();
   }
 
   @override
@@ -170,6 +181,28 @@ class _AddVechState extends State<AddVech> {
                     },
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                  child: TextFormField(
+                    autofocus: false,
+                    decoration: InputDecoration(
+                      labelText: 'Add Tag No.',
+                      hintText: 'Enter Tag No.',
+                      labelStyle:
+                          TextStyle(fontSize: 16.0, color: Colors.white),
+                      border: OutlineInputBorder(),
+                      errorStyle:
+                          TextStyle(color: Colors.redAccent, fontSize: 14),
+                    ),
+                    controller: tagNoController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*Required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.lightBlueAccent, // background
@@ -183,7 +216,8 @@ class _AddVechState extends State<AddVech> {
                           addressController.text,
                           modelController.text,
                           emailController.text,
-                          vechNumController.text);
+                          vechNumController.text,
+                          tagNoController.text);
 
                       Get.showSnackbar(GetSnackBar(
                         message: 'Add Vechile',
@@ -208,4 +242,6 @@ class _AddVechState extends State<AddVech> {
       ),
     );
   }
+
+  oer() {}
 }

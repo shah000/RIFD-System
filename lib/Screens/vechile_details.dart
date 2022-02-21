@@ -4,6 +4,7 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/Screens/challen_screen.dart';
 import 'package:fyp/model/user.dart';
 import 'package:outline_search_bar/outline_search_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,28 +19,25 @@ class VechileDetails extends StatefulWidget {
 class _VechileDetailsState extends State<VechileDetails> {
   bool selected = false;
   List<UserModel> dataList = [];
-  DatabaseReference databaseReference =
+  DatabaseReference databaseRefernce =
       FirebaseDatabase.instance.ref().child('Users');
-
-  void readData() {
-    print('read');
-    var readData = databaseReference.once().then((snap) {
-      //TO retrieve all the documents from collection
-
-      var data = snap.snapshot.value;
-
-      setState(() {
-        print('Length : ${dataList.length}');
-      });
-    });
-  }
+  Query pendingdbRef = FirebaseDatabase.instance
+      .ref()
+      .child("Users")
+      .orderByChild('status')
+      .equalTo('1');
 
   @override
   void initState() {
-    readData();
     if (kDebugMode) {
       print("object");
     }
+    Query pendingdbRef = FirebaseDatabase.instance
+        .ref()
+        .child("Users")
+        .orderByChild('status')
+        .equalTo('1');
+
     super.initState();
   }
 
@@ -54,24 +52,24 @@ class _VechileDetailsState extends State<VechileDetails> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: OutlineSearchBar(
-                onKeywordChanged: (text) {
-                  serachMethod(text);
-                },
-                onTap: () {},
-                borderWidth: 1,
-                borderRadius: BorderRadius.circular(15),
-                hideSearchButton: true,
-                hintText: 'Vehilce Number',
-                clearButtonColor: Colors.black,
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 16.0),
+            //   child: OutlineSearchBar(
+            //     onKeywordChanged: (text) {
+            //       serachMethod(text);
+            //     },
+            //     onTap: () {},
+            //     borderWidth: 1,
+            //     borderRadius: BorderRadius.circular(15),
+            //     hideSearchButton: true,
+            //     hintText: 'Vehilce Number',
+            //     clearButtonColor: Colors.black,
+            //     icon: Icon(
+            //       Icons.search,
+            //       color: Colors.black,
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 25,
             ),
@@ -83,7 +81,7 @@ class _VechileDetailsState extends State<VechileDetails> {
                   tabs: [
                     const Text('USER'),
                     const Text('VEHICLE'),
-                    const Text('PENALTY'),
+                    const Text('PENDING'),
                   ],
                   tabBarProperties: TabBarProperties(
                     padding: const EdgeInsets.symmetric(
@@ -152,22 +150,16 @@ class _VechileDetailsState extends State<VechileDetails> {
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Name"),
-                              Text("Rehan Ali"),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text("Email"),
-                              Text("rehanAli@gmail.com"),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              ElevatedButton(
-                                  onPressed: () {}, child: Text("Pending"))
-                            ],
+                          child: FirebaseAnimatedList(
+                            defaultChild:
+                                Center(child: CircularProgressIndicator()),
+                            query: pendingdbRef,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, snapshot, animation, index) {
+                              Map? user = snapshot.value as Map?;
+                              return _buildVechileItem(user: user);
+                            },
                           ),
                         ),
                       ),
