@@ -10,6 +10,8 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<User?> firebaseUser;
   RxBool isload = false.obs;
+  RxBool isHidden = false.obs;
+  
 
   @override
   void onReady() {

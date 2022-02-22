@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
+  bool isHidden = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,9 +107,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                       },
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: isHidden,
                       decoration: InputDecoration(
                           hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.visibility),
+                            onPressed: () {
+                              _togglePasswordView();
+                            },
+                            color: Colors.white,
+                          ),
                           hintStyle: TextStyle(color: Colors.white),
                           prefixIcon: Icon(
                             Icons.password,
@@ -163,5 +171,11 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      isHidden = !isHidden;
+    });
   }
 }
