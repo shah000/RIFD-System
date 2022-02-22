@@ -27,7 +27,7 @@ class _ChallenScreenState extends State<ChallenScreen> {
     DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("Users");
     dbRef.once().then((snap) {
       dataList.clear();
-        Map<dynamic, dynamic>? data = snap.snapshot.value as Map?;
+      Map<dynamic, dynamic>? data = snap.snapshot.value as Map?;
 
       data?.forEach((key, value) {
         print('Name:::::::::::' + data[key]['name']);
